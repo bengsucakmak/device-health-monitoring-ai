@@ -18,15 +18,55 @@ This project aims to:
 ---
 
 ## System Architecture
-The system consists of the following components:
-- Time-series data ingestion
-- Feature extraction and normalization
-- Anomaly detection model
-- Health score estimation and visualization
 
-*(Architecture diagram will be added)*
+The Device Health Assistant is designed as an end-to-end **B2C predictive maintenance system** built on time-series analysis and anomaly detection.
 
----
+The architecture follows a modular pipeline that transforms raw aggregate energy data into actionable device health insights.
+
+![System Architecture](assets/system_architecture.png)
+
+### Architecture Overview
+
+1. **Data Source**
+   - Smart meter / main electricity meter
+   - Provides aggregate household energy consumption as a time series
+
+2. **Data Preprocessing**
+   - Time indexing and resampling
+   - Sliding window generation for sequence modeling
+   - Noise handling and signal smoothing
+
+3. **Model 1: NILM-Based Device Disaggregation**
+   - Deep learning sequence model (Transformer / sequence-based architecture)
+   - Input: aggregate power signal
+   - Output: device-level power consumption signals
+   - Purpose: isolate individual device signatures (e.g., refrigerator, HVAC)
+
+4. **Device-Level Time Series**
+   - Clean, isolated energy signals per device
+   - Enables device-specific behavioral modeling
+
+5. **Model 2: Time Series Anomaly Detection**
+   - Autoencoder-based anomaly detection model
+   - Learns normal temporal behavior of device signals
+   - Computes reconstruction error as an anomaly signal
+
+6. **Anomaly Scoring**
+   - Continuous anomaly score over time
+   - Threshold-based decision logic
+   - Converts raw reconstruction error into interpretable scores
+
+7. **Health Assessment**
+   - Binary anomaly flags (Normal / Anomalous)
+   - Health score bands: Healthy, Warning, Critical
+   - Tracks degradation trends instead of single-point failures
+
+8. **User Interface (B2C Dashboard)**
+   - Streamlit-based interactive dashboard
+   - Time series visualization
+   - Health score indicators
+   - Alerts and early warning notifications
+
 
 ## Machine Learning Approach
 - Time-series modeling
