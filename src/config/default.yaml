@@ -1,0 +1,52 @@
+project:
+  name: "cihaz_sagligi_asistani"
+  seed: 42
+
+paths:
+  raw_h5_path: "data/raw/ukdale.h5"
+  log_dir: "outputs/logs"
+
+data:
+  building: 1
+  aggregate_key: "/building1/elec/meter1"
+  appliance_key: "/building1/elec/meter12"
+  power_column: ["power", "apparent"]
+  sampling: "1min"
+
+  # H5 içinden okunan dataframe sütun adları
+  # Eğer H5 içinde farklı isimler varsa burayı güncelleyeceğiz.
+  aggregate_col: "aggregate"
+  appliance_col: "fridge"
+
+preprocess:
+  drop_negative: true
+  fillna_method: "ffill"     # ffill -> sonra bfill
+  clip_max_watt: 5000        # aggregate için aşırı uçları kesmek (basit koruma)
+
+windowing:
+  window_size: 1024          # 1024 dakika ~ 17 saat
+  stride: 256
+  split:
+    train: 0.70
+    val: 0.15
+    test: 0.15
+
+model2:
+  # sequence üretimi
+  seq_len: 240        # 240 dakika = 4 saat (başlangıç için iyi)
+  stride: 60          # 1 saat kaydırma
+  train_ratio: 0.8    # sadece "normal" varsayılan ilk %80 train
+  normalize: "zscore" # z-score
+
+  # eğitim
+  batch_size: 64
+  epochs: 30
+  lr: 0.001
+  weight_decay: 0.0001
+  early_stop_patience: 6
+
+  # model
+  latent_dim: 16
+  hidden_dim: 64
+  num_layers: 2
+  dropout: 0.1

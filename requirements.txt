@@ -1,0 +1,10 @@
+numpy>=1.24
+pandas>=2.0
+scikit-learn>=1.3
+matplotlib>=3.7
+tqdm>=4.66
+PyYAML>=6.0
+h5py>=3.10
+
+# PyTorch (CPU/GPU sistemine göre pip uygun paketi kurar)
+torch>=2.1

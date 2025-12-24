@@ -1,0 +1,6 @@
+[2025-12-12 18:50:46] HELLO PIPELINE
+Project: cihaz_sagligi_asistani
+Seed: 42
+Raw dataset path: data/raw/ukdale.h5
+Dataset exists: YES
+Next step: scripts/01_prepare_data.py (UK-DALE read + resample + window)
