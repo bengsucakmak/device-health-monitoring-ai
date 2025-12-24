@@ -1,103 +1,149 @@
-# Device Health Monitoring AI
+# Device Health Assistant
+**B2C Predictive Maintenance System based on Time Series Analysis**
 
-## Overview
-An AI-powered device health monitoring system designed to detect early signs of malfunction in electrical appliances using time-series analysis and anomaly detection.
+---
 
-The system focuses on **predictive maintenance**, enabling proactive interventions before critical failures occur.
+## Executive Summary
+
+Device Health Assistant is an end-to-end **AI-powered predictive maintenance system** designed to monitor the health of household electrical devices using time-series data.
+
+The system transforms **raw aggregate energy consumption** into **device-level health insights**, enabling early detection of abnormal behavior and proactive maintenance decisions before critical failures occur.
+
+This project focuses on **real-world constraints**, **interpretable health assessment**, and **product-oriented AI system design**.
 
 ---
 
 ## Problem Statement
-Electrical devices often fail silently before visible breakdowns occur. Traditional monitoring approaches rely on reactive alerts rather than predictive insights.
 
-This project aims to:
-- Detect abnormal behavior in device power consumption patterns
-- Estimate device health status over time
-- Provide early warnings for potential failures
+Most household and industrial devices do not fail abruptly.  
+Instead, they exhibit **subtle behavioral changes** long before visible breakdowns occur.
+
+Traditional monitoring systems:
+- React after failures
+- Lack device-level granularity
+- Provide binary alerts without context
+
+This project addresses these limitations by:
+- Disaggregating aggregate energy data into device-specific signals
+- Learning normal device behavior over time
+- Quantifying degradation using anomaly scores and health bands
+- Presenting results through a user-friendly B2C dashboard
 
 ---
 
 ## System Architecture
 
-The Device Health Assistant is designed as an end-to-end **B2C predictive maintenance system** built on time-series analysis and anomaly detection.
-
-The architecture follows a modular pipeline that transforms raw aggregate energy data into actionable device health insights.
+The Device Health Assistant is designed as a modular pipeline that converts raw energy signals into actionable health assessments.
 
 ![System Architecture](assets/system_architecture.png)
 
 ### Architecture Overview
 
-1. **Data Source**
-   - Smart meter / main electricity meter
-   - Provides aggregate household energy consumption as a time series
+### 1. Data Source
+- Smart meter / main electricity meter
+- Provides aggregate household energy consumption as a time series
 
-2. **Data Preprocessing**
-   - Time indexing and resampling
-   - Sliding window generation for sequence modeling
-   - Noise handling and signal smoothing
+### 2. Data Preprocessing
+- Time indexing and resampling
+- Sliding window generation for sequence modeling
+- Noise handling and signal smoothing
 
-3. **Model 1: NILM-Based Device Disaggregation**
-   - Deep learning sequence model (Transformer / sequence-based architecture)
-   - Input: aggregate power signal
-   - Output: device-level power consumption signals
-   - Purpose: isolate individual device signatures (e.g., refrigerator, HVAC)
+### 3. Model 1: NILM-Based Device Disaggregation
+- Deep learning sequence model (Transformer / sequence-based architecture)
+- Input: aggregate power consumption signal
+- Output: device-level power consumption
+- Purpose: isolate individual device signatures (e.g., refrigerator, HVAC)
 
-4. **Device-Level Time Series**
-   - Clean, isolated energy signals per device
-   - Enables device-specific behavioral modeling
+### 4. Device-Level Time Series
+- Clean and isolated energy signals per device
+- Enables device-specific temporal modeling
 
-5. **Model 2: Time Series Anomaly Detection**
-   - Autoencoder-based anomaly detection model
-   - Learns normal temporal behavior of device signals
-   - Computes reconstruction error as an anomaly signal
+### 5. Model 2: Time Series Anomaly Detection
+- Autoencoder-based anomaly detection model
+- Learns normal operational patterns of each device
+- Computes reconstruction error as an anomaly signal
 
-6. **Anomaly Scoring**
-   - Continuous anomaly score over time
-   - Threshold-based decision logic
-   - Converts raw reconstruction error into interpretable scores
+### 6. Anomaly Scoring
+- Continuous anomaly score over time
+- Threshold-based decision logic
+- Converts reconstruction error into interpretable severity levels
 
-7. **Health Assessment**
-   - Binary anomaly flags (Normal / Anomalous)
-   - Health score bands: Healthy, Warning, Critical
-   - Tracks degradation trends instead of single-point failures
+### 7. Health Assessment
+- Binary anomaly flags (Normal / Anomalous)
+- Health score bands:
+  - **Healthy**
+  - **Warning**
+  - **Critical**
+- Tracks gradual degradation rather than isolated outliers
 
-8. **User Interface (B2C Dashboard)**
-   - Streamlit-based interactive dashboard
-   - Time series visualization
-   - Health score indicators
-   - Alerts and early warning notifications
-
-
-## Machine Learning Approach
-- Time-series modeling
-- Unsupervised / semi-supervised anomaly detection
-- Health score computation based on anomaly density and severity
+### 8. User Interface (B2C Dashboard)
+- Streamlit-based interactive dashboard
+- Time-series visualization per device
+- Health indicators and alerts
+- Early warning notifications for potential failures
 
 ---
 
-## Technologies Used
-- Python
-- PyTorch
-- Scikit-learn
-- Pandas, NumPy
-- Matplotlib / Seaborn
-- Streamlit (for visualization)
+## Machine Learning Approach
+
+### NILM (Non-Intrusive Load Monitoring)
+- Sequence-based deep learning model
+- Learns device-specific power signatures from aggregate signals
+- Enables device-level monitoring without additional sensors
+
+### Anomaly Detection
+- Autoencoder trained on normal device behavior
+- Reconstruction error used as anomaly indicator
+- Suitable for scenarios with limited labeled failure data
+
+### Health Scoring
+- Continuous anomaly scores aggregated over time
+- Health bands provide interpretable, user-friendly feedback
+- Focus on trend-based degradation detection
+
+---
+
+## Key Design Decisions
+
+- **Two-stage modeling** (disaggregation + anomaly detection) for modularity
+- **Unsupervised learning** to handle scarce failure labels
+- **Health bands instead of raw scores** for interpretability
+- **Product-oriented design** with a B2C dashboard as a first-class component
 
 ---
 
 ## Results & Insights
-- Detection of abnormal device behavior patterns
-- Visualization of device health degradation
-- Early warning capability before failure events
+
+- Successful isolation of device-level energy patterns
+- Detection of abnormal behavior before visible failures
+- Clear visualization of health degradation trends
+- Improved interpretability compared to binary alert systems
+
+*(Example plots and dashboard screenshots can be added in the `assets/` folder.)*
+
+---
+
+## Technologies Used
+
+- Python
+- PyTorch
+- Scikit-learn
+- Pandas, NumPy
+- Matplotlib, Seaborn
+- Streamlit
 
 ---
 
 ## Future Improvements
-- Multi-device learning
+
 - Online / streaming anomaly detection
-- Deployment-ready monitoring service
+- Multi-device and multi-household learning
+- Adaptive thresholding based on usage patterns
+- Deployment as a cloud-based monitoring service
+- Integration with notification systems (email / mobile)
 
 ---
 
 ## License
+
 MIT License
